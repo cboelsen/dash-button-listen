@@ -13,6 +13,14 @@ log_format = '%(asctime)-15s: %(levelname)+8s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=log_format)
 
 
+def notify_started():
+    try:
+        from systemd.daemon import notify, Notification
+        notify(Notification.READY)
+    except ImportError:
+        pass
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('device')
@@ -94,6 +102,7 @@ def main():
     drop_privileges(args.user)
 
     config = load_config()
+    notify_started()
     cache.discover_plugs()
 
     buttons = {standardise_mac(k): v for k, v in config['buttons'].items()}

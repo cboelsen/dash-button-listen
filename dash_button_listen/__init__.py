@@ -59,8 +59,8 @@ class PlugAddressCache:
         self._cache = {}
         devices = Discover.discover()
         for dev in devices.values():
-            logging.info('Found plug "%s" at %s', dev.alias, dev.ip_address)
-            self._cache[dev.alias.lower()] = SmartPlug(dev.ip_address)
+            logging.info('Found plug "%s" at %s', dev.alias, dev.host)
+            self._cache[dev.alias.lower()] = SmartPlug(dev.host)
 
     def get_plug(self, name):
         def _get():
